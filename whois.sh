@@ -52,10 +52,16 @@ patch --dry-run --silent -p1 -i "$PATCH_NAME" >/dev/null 2>&1 && \
   patch -p1 -i "$PATCH_NAME" || \
   echo "The patch was not applied."
 
+# runtime error: getaddrinfo(whois.arin.net): Bad value for ai_flags
+PATCH_NAME="${PATH_CMD%/*}/002-disable-idn.patch"
+patch --dry-run --silent -p1 -i "$PATCH_NAME" >/dev/null 2>&1 && \
+  patch -p1 -i "$PATCH_NAME" || \
+  echo "The patch was not applied."
+
 CC="arm-brcm-linux-uclibcgnueabi-gcc" \
-OPTS="-ffunction-sections -fdata-sections -O3 -pipe -march=armv7-a -mtune=cortex-a9 -fno-caller-saves -mfloat-abi=soft -Wall -fPIC -std=gnu99 -I$PACKAGE_ROOT/usr/include" \
+OPTS="-ffunction-sections -fdata-sections -O3 -pipe -march=armv7-a -mtune=cortex-a9 -fno-caller-saves -mfloat-abi=soft -Wall -fPIC -std=gnu99 -I$PACKAGE_ROOT/include" \
 CFLAGS="$OPTS" CPPFLAGS="$OPTS" \
-LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$PACKAGE_ROOT/usr/lib" \
+LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$PACKAGE_ROOT/lib" \
 LIBS="" \
 BASEDIR="$PACKAGE_ROOT" \
 $MAKE whois
